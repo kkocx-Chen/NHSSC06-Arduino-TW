@@ -1,0 +1,12 @@
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\bin\Debug\WindowsApp1.exe.config
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\bin\Debug\WindowsApp1.exe
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\bin\Debug\WindowsApp1.pdb
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\bin\Debug\WindowsApp1.xml
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\obj\Debug\WindowsApp1.vbprojAssemblyReference.cache
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\obj\Debug\WindowsApp1.Form1.resources
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\obj\Debug\WindowsApp1.Resources.resources
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\obj\Debug\WindowsApp1.vbproj.GenerateResource.cache
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\obj\Debug\WindowsApp1.vbproj.CoreCompileInputs.cache
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\obj\Debug\WindowsApp1.exe
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\obj\Debug\WindowsApp1.xml
+D:\110工科技藝競賽電腦修護 二站大補包\Project\74595\74595\WindowsApp1\obj\Debug\WindowsApp1.pdb
