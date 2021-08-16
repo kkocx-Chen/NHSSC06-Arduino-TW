@@ -27,38 +27,38 @@ void Led_Show595(int LedData) //255 全亮
 //---------------------------------------------------
 void MyTimeInterrupt() { 
     if(Timer_20ms>0) //毫秒格式
-      Timer_20ms--;
+      Timer_20ms--; //開始 Timer 倒數
     //----------------------------
     if(Timer_1s>0) //秒數格式
-      Timer_1s--;
+      Timer_1s--; //開始 Timer 倒數
 }
 //==============按鍵的副程式===========================
 void KeyScan(){
- if(Timer_20ms == 0){ 
-        Timer_20ms = 2; 
-        Sw1 = digitalRead(Sw1_Pin); //按鈕一 腳位
+ if(Timer_20ms == 0){  //Timer 初始化
+        Timer_20ms = 2; // 按鍵兩毫秒
+        Sw1 = digitalRead(Sw1_Pin); //讀取按鈕一 腳位
         if((Sw1_last==1)&&(Sw1==0)){ //Sw1=0
             Sw1_Cut++;
             Loop_Cun = 6; //執行次數 閃爍*2   
             Led_Mode = 1; //配合 case 1
         }
         //=============================== 
-        Sw2 = digitalRead(Sw2_Pin); //按鈕二 腳位
+        Sw2 = digitalRead(Sw2_Pin); //讀取按鈕二 腳位
         if((Sw2_last==1)&&(Sw2==0)){
             Loop_Cun = 2; //執行次數
             Led_State_Cun=0; //流水燈從0開始
             Led_Mode = 2; //配合 case 2
         } 
-        Sw3 = digitalRead(Sw3_Pin); //按鈕三 腳位
+        Sw3 = digitalRead(Sw3_Pin); //讀取按鈕三 腳位
         if((Sw3_last==1)&&(Sw3==0)){
            Loop_Cun = 3; //執行次數
            Led_State_Cun=7; //流水燈從7開始
            Led_Mode = 3;  //配合 case 3
         } 
          
-         Sw1_last = Sw1; 
-         Sw2_last = Sw2;
-         Sw3_last = Sw3;
+         Sw1_last = Sw1; //將設定好的 Sw1_list 配給 Sw1 供使用
+         Sw2_last = Sw2; //將設定好的 Sw2_list 配給 Sw1 供使用
+         Sw3_last = Sw3; //將設定好的 Sw3_list 配給 Sw1 供使用
  }
 }
     //---------LED的副程式--------------
