@@ -38,7 +38,7 @@ void KeyScan(){
         Timer_20ms = 2; // 按鍵兩毫秒
         Sw1 = digitalRead(Sw1_Pin); //讀取按鈕一 腳位
         if((Sw1_last==1)&&(Sw1==0)){ //Sw1=0
-            Sw1_Cut++;
+            Sw1_Cut++; //
             Loop_Cun = 6; //執行次數 閃爍*2   
             Led_Mode = 1; //配合 case 1
         }
@@ -143,7 +143,7 @@ void Led_Show(){
                 break;
         }
     }
-//-------------74595LEDVB部分----------------------------
+//-------------74595LED--VB部分--------------------------
     void Led_ShowVB()
     {
         int inByte = Serial.read();
