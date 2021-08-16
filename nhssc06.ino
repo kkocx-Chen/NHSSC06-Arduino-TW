@@ -143,6 +143,7 @@ void Led_Show(){
                 break;
         }
     }
+//-------------74595LEDVB部分----------------------------
     void Led_ShowVB()
     {
         int inByte = Serial.read();
