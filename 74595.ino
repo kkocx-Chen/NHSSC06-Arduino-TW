@@ -2,7 +2,6 @@
 #define data_pin 2  // 74HC595序列輸入
 #define clk_pin 3  // 74HC595序列時脈
 #define latch_pin 4  // 74HC595暫存器時脈
-
 /////////按鍵腳位///////////////////////////////
 #define KEY_COUNT_PIN 10
 #define KEY_PAUSE_PIN 11
@@ -80,19 +79,22 @@ void setup() {
 }
 
 void loop() {
-  value=Serial.read();
-  switch(value){
-    case '1':
-      startCounter();
-    break;
-  
-    case '2':
-      pauseCounter();
-    break;
+  if(Serial.available() > 0) {
+    display(11);
+    value=Serial.parseInt();
+    switch(value){
+      case 1:
+        startCounter();
+      break;
+    
+      case 2:
+        pauseCounter();
+      break;
 
-    case '3':  
-      clearCounter();
-    break;
+      case 3:  
+        clearCounter();
+      break;
+    }
   }
 
   if(getCountButton()) { //開始
@@ -106,13 +108,13 @@ void loop() {
   }
 
   int count = getCounterValue();
-  Serial.println(count);
-  display(count);
+  // Serial.println(count);
+  // display(count);
 }
 
 /////////////////////////計時器/////////////////////////
 const unsigned long counterInterval = 200; //計時器的+1速度(ms)
-//下面都不能改
+//////////////////////下面都不能改/////////////////////////////
 bool counterCounting = false;
 int counterCount = 0;
 unsigned long counterStartTime = millis();
