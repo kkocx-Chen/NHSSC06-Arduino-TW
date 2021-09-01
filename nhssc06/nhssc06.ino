@@ -25,12 +25,12 @@ const int IC273_ClkPin=5;*/
 //--------------變數宣告-------------------------
 int Timer_1s=100,Timer_20ms=2,Timer_30ms=3,Timer_50ms=5,Timer_3s=300;                   //計時器宣告 100ms*10s=1000ms
 int Sw1,Sw1_last,Sw1_Cut=0,Sw2,Sw2_last,Sw2_Cut=0,Sw3,Sw3_last,Sw3_Cut=0; //按鍵的宣告
-int Led_Mode= 0; //LED模式的宣告
+int Led_Mode= 0; //Led模式 1:閃爍 2:左移 3:右移
 bool Flag_Led = false; //led 旗標
-int Led_State[]={1,3,7,15,31,63,127,255}; // LED陣列
-int Led_State_Cun = 0; //LED Count
+int Led_State[]={1,3,7,15,31,63,127,255,0}; // LED陣列 
+int Led_State_Cun = 0; //左右移Led狀態計數器
 int Led_LoopOn = 0; //迴圈的次數
-int Function = 0;
+int Function = 1;   //主程式功能狀態
 int Led_LoopOn_Backup= 0;
 int Seg4_Mode= 0;
 int OnLine=0;
@@ -119,15 +119,14 @@ void serialEvent() {
       inputString.toCharArray(UartReceiveBuf, 10);    
       inputString = "";      
       switch(UartReceiveBuf[0]){
-        case 'K':        
+        case 'K':        //偵測串口啟動
           OnLine=1;
           Serial.println('K');
           break;
-        case 'T':          
-          if(UartReceiveBuf[1]=='1'){
-           // Serial.println('1');
+        case 'T':          //開始計秒
+          if(UartReceiveBuf[1]=='1'){ //vb 送 1 就開始計時
             Function=3;
-            Time_h[1]=UartReceiveBuf[2]-'0';
+            Time_h[1]=UartReceiveBuf[2]-'0'; 
             Time_h[0]=UartReceiveBuf[3]-'0';
             Time_m[1]=UartReceiveBuf[4]-'0';
             Time_m[0]=UartReceiveBuf[5]-'0';
@@ -141,6 +140,19 @@ void serialEvent() {
       stringComplete = true;       
     }    
    
+}
+//-------------------VB-LED------------------------------------
+void LED_Click() {
+     while (Serial.available()) {
+          inChar = (char)Serial.read();
+          inputString += inChar;
+    }      
+    Serial.println('L');
+        
+
+
+
+
 }
 //------------四位數七段顯示器的副程式--------------------------------
 void Seg4_Show()
@@ -295,6 +307,7 @@ void KeyScan(){
       Timer_20ms = 2;                     //Timer初值
       Sw1 = digitalRead(Sw1_Pin);          //偵測按鍵1狀態
       if((Sw1_last == 1)&&(Sw1 == 0)){    //負緣觸發
+        Serial.println('1');
         Led_Mode=1;                       //Led第一種模式          
         Led_State_Cun=0;                  //Led計數Cunter
         Seg4_LoopOn=0;                     //七段顯示器功能關閉
@@ -494,49 +507,28 @@ void LedShow(){
 //    }
 //   }
 // }
-//-------------74595LED--VB部分--------------------------
-    void Led_ShowVB()
-    {
-        int inByte = Serial.read();
-        switch (inByte) { //1,3,7,15,31,63,127,255
-            case '1': //LED全觀
-                LED_Show240(0);
-            break;
-            case '2': //LED 1 開
-                LED_Show240(1);
-            break;
-            case '4': //LED 2 開
-                LED_Show240(2);
-            break;
-            case '6': 
-                LED_Show240(4);
-            break;
-            case '8':
-                LED_Show240(8);
-            break;
-            case '10':
-                LED_Show240(16);
-            break;
-            case '12':
-                LED_Show240(32);
-            break;
-            case '14':
-                LED_Show240(64);
-            break;
-            case '16':
-                LED_Show240(128);
-            break;
-            case '11':
-                LED_Show240(0);
-        }
-    }
-//---------------------VB到Seg4---------------------
-void SegTime(){
-    int Time = Serial.read();
-    Seg4_LoopOn=1;
-            Seg4_DataOut(0,0,0,Time,Time);//8.4.2.1
-            Seg4_Show();
-}
+//--------------------------七段顯示器切換-------------------------------------------------------
+void Seg_Show(){  
+  if(Timer_3s == 0){                      //300msSeg顯示一次
+     Timer_3s = 300;                        //Timer初值 
+    /* switch(Seg_Mode){
+        case 1:
+          Seg4_DataOut(8,B00111001,2,9,8);
+          break;
+        case 2:
+         Seg4_DataOut(8,B00111001,1,0,7);
+         Seg_Mode=3; 
+         break;  
+        case 3:
+         Seg4_DataOut(0,1,1,9,8); 
+         Seg_Mode=4;        
+         break;
+         case 4:
+
+          break;
+     }   */
+  } 
+}     
 //--------------程式初始化-------------------------
 void setup() {
   //-------------uart的宣告------------------
@@ -585,18 +577,19 @@ void loop() {
     KeyScan();    
     LedShow();
     Seg4_Show(); 
+    Seg_Show();
 //---------------功能1----------------------------
   if(OnLine==0){
     if(Function==1){    
         Seg4_LoopOn=1;
         Seg_Mode=1;
-        Seg4_DataOut(8,B00111001,2,9,8);
+        Seg4_DataOut(8,B00111001,2,9,8); //8.4.2.1
     }
   }
  else{
     if(Function==3){    
       if(stringComplete==true){
-        Seg4_DataOut(9,B01000000,Time_s[1],Time_s[0],B01000000);  
+        Seg4_DataOut(9,B01000000,Time_s[1],Time_s[0],B01000000);  //8.4.2.1
         stringComplete = false;  
      }
    }
